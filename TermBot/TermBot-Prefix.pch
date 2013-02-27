@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'TermBot' target in the 'TermBot' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
