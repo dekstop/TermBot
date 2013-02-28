@@ -14,12 +14,14 @@
 @implementation AppDelegate
 
 NSMutableArray *chars;
+NSMutableSet *history;
 TermWindow *termWindow;
 
 - (id)init {
     if (self = [super init]) {
         chars = [[NSMutableArray alloc] init];
-        termWindow = [[TermWindow alloc] initWithColor:[NSColor redColor]];
+        history = [[NSMutableSet alloc] init];
+        termWindow = [[TermWindow alloc] initWithColor:[NSColor lightGrayColor]];
     }
     return self;
 }
@@ -78,8 +80,11 @@ TermWindow *termWindow;
 
 - (void)showTerm:(NSString*)term
 {
-    NSLog(@"%@", term);
-    [termWindow showTerm:term];
+    if (![history containsObject:term]) {
+        NSLog(@"%@", term);
+        [termWindow showTerm:term];
+        [history addObject:term];
+    }
 }
 
 @end

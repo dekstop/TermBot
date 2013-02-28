@@ -53,8 +53,6 @@ NSPoint drawOffset;
         mulX = viewWidth / textSize.width;
         mulY = viewHeight / textSize.height;
     
-        NSLog(@"%f %f %f", mulX, mulY, MAX(ABS(1-mulX), ABS(1-mulY)));
-
         float fontSize = [font pointSize] * MIN(mulX, mulY);
         
         font = [NSFont fontWithName:[font fontName] size:fontSize];
