@@ -7,15 +7,19 @@
 //
 
 #import "AppDelegate.h"
+#import "TermWindow.h"
+
 #import <Carbon/Carbon.h>
 
 @implementation AppDelegate
 
 NSMutableArray *chars;
+TermWindow *termWindow;
 
 - (id)init {
     if (self = [super init]) {
         chars = [[NSMutableArray alloc] init];
+        termWindow = [[TermWindow alloc] initWithColor:[NSColor redColor]];
     }
     return self;
 }
@@ -34,6 +38,9 @@ NSMutableArray *chars;
             NSUInteger modifierFlags = [event modifierFlags] & unprintableModifierKeyMask;
             if (modifierFlags == 0) {
                 switch ([event keyCode]) {
+                // Non-word chars: ignore
+                    case kVK_Escape:
+                        break;
                 // Basic editing: replay
                     case kVK_Delete:
                         [chars removeLastObject];
@@ -57,7 +64,7 @@ NSMutableArray *chars;
                     case kVK_Return:
                     case kVK_Space:
                         if ([chars count] > 0) {
-                            NSLog(@"%@", [chars componentsJoinedByString:@""]);
+                            [self showTerm:[chars componentsJoinedByString:@""]];
                         }
                         [chars removeAllObjects];
                         break;
@@ -67,6 +74,12 @@ NSMutableArray *chars;
             }
         }
     }];
+}
+
+- (void)showTerm:(NSString*)term
+{
+    NSLog(@"%@", term);
+    [termWindow showTerm:term];
 }
 
 @end
