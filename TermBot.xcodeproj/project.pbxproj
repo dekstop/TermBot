@@ -7,13 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A107BE716DEA76200594608 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A107BE616DEA76200594608 /* Cocoa.framework */; };
 		1A107BF116DEA76200594608 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A107BEF16DEA76200594608 /* InfoPlist.strings */; };
 		1A107BF316DEA76200594608 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A107BF216DEA76200594608 /* main.m */; };
 		1A107BF716DEA76200594608 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1A107BF516DEA76200594608 /* Credits.rtf */; };
 		1A107BFA16DEA76200594608 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A107BF916DEA76200594608 /* AppDelegate.m */; };
 		1A107BFD16DEA76200594608 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A107BFB16DEA76200594608 /* MainMenu.xib */; };
 		1A107C0416DEA78F00594608 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 1A107C0316DEA78F00594608 /* README */; };
+		1A107C0D16DFBDA900594608 /* TermWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A107C0C16DFBDA900594608 /* TermWindow.m */; };
+		1A107C0F16DFC01B00594608 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A107C0E16DFC01A00594608 /* Carbon.framework */; };
+		1A107C1116DFC02A00594608 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A107C1016DFC02A00594608 /* QuartzCore.framework */; };
+		1A107C1216DFC03E00594608 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A107BE616DEA76200594608 /* Cocoa.framework */; };
+		1A107C1516DFC41A00594608 /* TermView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A107C1416DFC41A00594608 /* TermView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +35,12 @@
 		1A107BF916DEA76200594608 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1A107BFC16DEA76200594608 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1A107C0316DEA78F00594608 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		1A107C0B16DFBDA900594608 /* TermWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermWindow.h; sourceTree = "<group>"; };
+		1A107C0C16DFBDA900594608 /* TermWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermWindow.m; sourceTree = "<group>"; };
+		1A107C0E16DFC01A00594608 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		1A107C1016DFC02A00594608 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1A107C1316DFC41A00594608 /* TermView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermView.h; sourceTree = "<group>"; };
+		1A107C1416DFC41A00594608 /* TermView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,7 +48,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A107BE716DEA76200594608 /* Cocoa.framework in Frameworks */,
+				1A107C1216DFC03E00594608 /* Cocoa.framework in Frameworks */,
+				1A107C0F16DFC01B00594608 /* Carbon.framework in Frameworks */,
+				1A107C1116DFC02A00594608 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +60,8 @@
 		1A107BDA16DEA76200594608 = {
 			isa = PBXGroup;
 			children = (
+				1A107C1016DFC02A00594608 /* QuartzCore.framework */,
+				1A107C0E16DFC01A00594608 /* Carbon.framework */,
 				1A107C0316DEA78F00594608 /* README */,
 				1A107BEC16DEA76200594608 /* TermBot */,
 				1A107BE516DEA76200594608 /* Frameworks */,
@@ -89,6 +103,10 @@
 				1A107BF916DEA76200594608 /* AppDelegate.m */,
 				1A107BFB16DEA76200594608 /* MainMenu.xib */,
 				1A107BED16DEA76200594608 /* Supporting Files */,
+				1A107C0B16DFBDA900594608 /* TermWindow.h */,
+				1A107C0C16DFBDA900594608 /* TermWindow.m */,
+				1A107C1316DFC41A00594608 /* TermView.h */,
+				1A107C1416DFC41A00594608 /* TermView.m */,
 			);
 			path = TermBot;
 			sourceTree = "<group>";
@@ -172,6 +190,8 @@
 			files = (
 				1A107BF316DEA76200594608 /* main.m in Sources */,
 				1A107BFA16DEA76200594608 /* AppDelegate.m in Sources */,
+				1A107C0D16DFBDA900594608 /* TermWindow.m in Sources */,
+				1A107C1516DFC41A00594608 /* TermView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
