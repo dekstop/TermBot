@@ -94,6 +94,16 @@ NSFileHandle *logFile;
     [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
 }
 
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    SEL action = [menuItem action];
+    
+    if (action == @selector(toggleIsRecording:)) {
+        return (isActive ? YES : NO);
+    }
+    return YES;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // App preferences

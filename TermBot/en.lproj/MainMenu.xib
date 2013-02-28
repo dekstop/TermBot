@@ -55,6 +55,24 @@
 							<string key="NSResourceName">NSMenuMixedState</string>
 						</object>
 					</object>
+					<object class="NSMenuItem" id="785194074">
+						<reference key="NSMenu" ref="885004628"/>
+						<string key="NSTitle">Launch on System Startup</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="628294508"/>
+						<reference key="NSMixedImage" ref="689380479"/>
+					</object>
+					<object class="NSMenuItem" id="515535831">
+						<reference key="NSMenu" ref="885004628"/>
+						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsSeparator">YES</bool>
+						<string key="NSTitle"/>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="628294508"/>
+						<reference key="NSMixedImage" ref="689380479"/>
+					</object>
 					<object class="NSMenuItem" id="734069136">
 						<reference key="NSMenu" ref="885004628"/>
 						<string key="NSTitle">Record Terms</string>
@@ -63,9 +81,9 @@
 						<reference key="NSOnImage" ref="628294508"/>
 						<reference key="NSMixedImage" ref="689380479"/>
 					</object>
-					<object class="NSMenuItem" id="785194074">
+					<object class="NSMenuItem" id="689563986">
 						<reference key="NSMenu" ref="885004628"/>
-						<string key="NSTitle">Launch on System Startup</string>
+						<string key="NSTitle">Open Log...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="628294508"/>
@@ -76,14 +94,6 @@
 						<bool key="NSIsDisabled">YES</bool>
 						<bool key="NSIsSeparator">YES</bool>
 						<string key="NSTitle"/>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="628294508"/>
-						<reference key="NSMixedImage" ref="689380479"/>
-					</object>
-					<object class="NSMenuItem" id="689563986">
-						<reference key="NSMenu" ref="885004628"/>
-						<string key="NSTitle">Open Log...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="628294508"/>
@@ -252,11 +262,12 @@
 							<reference ref="489472081"/>
 							<reference ref="637367946"/>
 							<reference ref="961903231"/>
-							<reference ref="785194074"/>
 							<reference ref="1046630638"/>
 							<reference ref="895079241"/>
 							<reference ref="734069136"/>
+							<reference ref="785194074"/>
 							<reference ref="689563986"/>
+							<reference ref="515535831"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -300,6 +311,11 @@
 						<reference key="object" ref="689563986"/>
 						<reference key="parent" ref="885004628"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">556</int>
+						<reference key="object" ref="515535831"/>
+						<reference key="parent" ref="885004628"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -317,12 +333,13 @@
 				<string key="543.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="551.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="554.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="556.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">555</int>
+			<int key="maxID">556</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
