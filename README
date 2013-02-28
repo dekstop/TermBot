@@ -1,0 +1,20 @@
+
+== TermBot
+
+An OS X utility that displays big pulsing text every time you type a word you haven't typed before.
+
+Limitations:
+* Text editing is a complex process; there's no way we can accurately determine all words correctly.
+
+Martin Dittus, 2013
+@dekstop
+
+
+== Installation
+
+Get the source here:
+https://github.com/dekstop/TermBot
+
+Compile, run.
+
+Only tested with Xcode 4.6 on OS X 10.8
