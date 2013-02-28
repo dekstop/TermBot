@@ -13,6 +13,7 @@
 		1A107BF716DEA76200594608 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1A107BF516DEA76200594608 /* Credits.rtf */; };
 		1A107BFA16DEA76200594608 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A107BF916DEA76200594608 /* AppDelegate.m */; };
 		1A107BFD16DEA76200594608 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A107BFB16DEA76200594608 /* MainMenu.xib */; };
+		1A107C0416DEA78F00594608 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 1A107C0316DEA78F00594608 /* README */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		1A107BF816DEA76200594608 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1A107BF916DEA76200594608 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1A107BFC16DEA76200594608 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		1A107C0316DEA78F00594608 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 		1A107BDA16DEA76200594608 = {
 			isa = PBXGroup;
 			children = (
+				1A107C0316DEA78F00594608 /* README */,
 				1A107BEC16DEA76200594608 /* TermBot */,
 				1A107BE516DEA76200594608 /* Frameworks */,
 				1A107BE416DEA76200594608 /* Products */,
@@ -156,6 +159,7 @@
 				1A107BF116DEA76200594608 /* InfoPlist.strings in Resources */,
 				1A107BF716DEA76200594608 /* Credits.rtf in Resources */,
 				1A107BFD16DEA76200594608 /* MainMenu.xib in Resources */,
+				1A107C0416DEA78F00594608 /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
