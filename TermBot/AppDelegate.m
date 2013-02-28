@@ -17,11 +17,18 @@ NSMutableArray *chars;
 NSMutableSet *history;
 TermWindow *termWindow;
 
+NSDateFormatter *dateFormatter;
+NSFileHandle *logFile;
+
 - (id)init {
     if (self = [super init]) {
         chars = [[NSMutableArray alloc] init];
         history = [[NSMutableSet alloc] init];
         termWindow = [[TermWindow alloc] initWithColor:[NSColor lightGrayColor]];
+
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+        logFile = OpenUserLog(@"TermBot.log");
     }
     return self;
 }
@@ -81,10 +88,47 @@ TermWindow *termWindow;
 - (void)showTerm:(NSString*)term
 {
     if (![history containsObject:term]) {
-        NSLog(@"%@", term);
+        Log(@"%@", term);
         [termWindow showTerm:term];
         [history addObject:term];
     }
+}
+
+NSFileHandle *OpenUserLog(NSString *filename)
+{
+    NSFileHandle *logFile;
+    NSString *logFilePath = [NSString stringWithFormat:@"%@/Library/Logs/%@", NSHomeDirectory(), filename];
+    NSFileManager * mFileManager = [NSFileManager defaultManager];
+    if([mFileManager fileExistsAtPath:logFilePath] == NO) {
+        [mFileManager createFileAtPath:logFilePath contents:nil attributes:nil];
+    }
+    logFile = [NSFileHandle fileHandleForWritingAtPath:logFilePath];
+    [logFile seekToEndOfFile];
+    return logFile;
+}
+
+void Log(NSString* format, ...)
+{
+    // Build string
+    va_list argList;
+    va_start(argList, format);
+    NSString* formattedMessage = [[NSString alloc] initWithFormat:format arguments:argList];
+    va_end(argList);
+    
+    // Console
+    NSLog(@"%@", formattedMessage);
+    
+    // File logging
+    NSString *logMessage = [NSString stringWithFormat:@"%@ %@\n",
+                            [dateFormatter stringFromDate:[NSDate date]],
+                            formattedMessage];
+    [logFile writeData:[logMessage dataUsingEncoding:NSUTF8StringEncoding]];
+    [logFile synchronizeFile];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
+    [logFile closeFile];
 }
 
 @end
