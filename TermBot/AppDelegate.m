@@ -13,10 +13,16 @@
 
 @implementation AppDelegate
 
+@synthesize isActive;
+NSAttributedString *menuTitleActive = nil;
+NSAttributedString *menuTitleInactive = nil;
+@synthesize isRecording;
+
 NSMutableArray *chars;
 NSMutableSet *history;
 TermWindow *termWindow;
 
+NSString *logFilePath;
 NSDateFormatter *dateFormatter;
 NSFileHandle *logFile;
 
@@ -28,15 +34,88 @@ NSFileHandle *logFile;
 
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
-        logFile = OpenUserLog(@"TermBot.log");
+        logFilePath = [NSString stringWithFormat:@"%@/Library/Logs/TermBot.log", NSHomeDirectory()];
+        logFile = OpenUserLog(logFilePath);
+        
+        menuTitleActive = [[NSMutableAttributedString alloc] initWithString:@"T" attributes:@{NSForegroundColorAttributeName:[NSColor blackColor], NSFontAttributeName:[NSFont systemFontOfSize:14.0]}];
+        menuTitleInactive = [[NSMutableAttributedString alloc] initWithString:@"T" attributes:@{NSForegroundColorAttributeName:[NSColor grayColor], NSFontAttributeName:[NSFont systemFontOfSize:14.0]}];
     }
     return self;
 }
         
+- (IBAction)toggleIsActive:(id)pId
+{
+    isActive = !isActive;
+    [[NSUserDefaults standardUserDefaults] setBool:isActive forKey:@"isActive"];
+    [self updateIsActiveDisplay];
+}
+
+- (void)updateIsActiveDisplay
+{
+    [isActiveMenuItem setState:(isActive ? NSOnState : NSOffState)];
+    [statusItem setAttributedTitle:(isActive ? menuTitleActive : menuTitleInactive)];
+}
+
+- (IBAction)toggleIsRecording:(id)pId
+{
+    isRecording = !isRecording;
+    [[NSUserDefaults standardUserDefaults] setBool:isRecording forKey:@"isRecording"];
+    [self updateIsRecordingDisplay];
+}
+
+- (void)updateIsRecordingDisplay
+{
+    [isRecordingMenuItem setState:(isRecording ? NSOnState : NSOffState)];
+}
+
+- (IBAction)openLog:(id)pId
+{
+    [[NSWorkspace sharedWorkspace] openFile:logFilePath];
+}
+
+- (IBAction)toggleLaunchOnStartup:(id)pId
+{
+    if ([self isLoginItem]) {
+        [self removeAsLoginItem];
+        [launchOnStartupMenuItem setState:NSOffState];
+    } else {
+        [self addAsLoginItem];
+        [launchOnStartupMenuItem setState:NSOnState];
+    }
+}
+
+- (IBAction)about:(id)pId
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/dekstop/TermBot"]];
+}
+
+- (IBAction)quit:(id)pId
+{
+    [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    // App preferences
+    NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:@"isActive"];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    
+    isActive = [[NSUserDefaults standardUserDefaults] boolForKey:@"isActive"];
+    isRecording = [[NSUserDefaults standardUserDefaults] boolForKey:@"isRecording"];
+    [launchOnStartupMenuItem setState:([self isLoginItem] ? NSOnState : NSOffState)];
+
+    // Status bar / tray icon
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    [statusItem setMenu:statusMenu];
+    [statusItem setHighlightMode:YES];
+    [self updateIsActiveDisplay];
+    [self updateIsRecordingDisplay];
+    
     // Register global event monitors -- may require assistive device access.
     [NSEvent addGlobalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event){
+        if (!isActive) {
+            return;
+        }
         if ([event type] == NSKeyDown) {
             if ([[event charactersIgnoringModifiers] isEqualToString:@"?"] ||
                 [[event charactersIgnoringModifiers] isEqualToString:@""]) {
@@ -87,17 +166,19 @@ NSFileHandle *logFile;
 
 - (void)showTerm:(NSString*)term
 {
-    if (![history containsObject:term]) {
+    if (isRecording) {
         Log(@"%@", term);
+    }
+    
+    if (![history containsObject:term]) {
         [termWindow showTerm:term];
         [history addObject:term];
     }
 }
 
-NSFileHandle *OpenUserLog(NSString *filename)
+NSFileHandle *OpenUserLog(NSString *logFilePath)
 {
     NSFileHandle *logFile;
-    NSString *logFilePath = [NSString stringWithFormat:@"%@/Library/Logs/%@", NSHomeDirectory(), filename];
     NSFileManager * mFileManager = [NSFileManager defaultManager];
     if([mFileManager fileExistsAtPath:logFilePath] == NO) {
         [mFileManager createFileAtPath:logFilePath contents:nil attributes:nil];
@@ -129,6 +210,79 @@ void Log(NSString* format, ...)
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
     [logFile closeFile];
+}
+
+/**
+ *
+ * Tools: add/remove login item.
+ * Based on https://gist.github.com/boyvanamstel/1409312 (MIT license)
+ *
+ **/
+
+- (BOOL)isLoginItem {
+    // See if the app is currently in LoginItems.
+    LSSharedFileListItemRef itemRef = [self itemRefInLoginItems];
+    // Store away that boolean.
+    BOOL isInList = itemRef != nil;
+    // Release the reference if it exists.
+    if (itemRef != nil) CFRelease(itemRef);
+    
+    return isInList;
+}
+
+- (void)addAsLoginItem {
+    // Get the LoginItems list.
+    LSSharedFileListRef loginItemsRef = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+    if (loginItemsRef == nil) return;
+    
+    // Add the app to the LoginItems list.
+    CFURLRef appUrl = (__bridge CFURLRef)[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
+    LSSharedFileListItemRef itemRef = LSSharedFileListInsertItemURL(loginItemsRef, kLSSharedFileListItemLast, NULL, NULL, appUrl, NULL, NULL);
+    if (itemRef) CFRelease(itemRef);
+}
+
+- (void)removeAsLoginItem {
+    // Get the LoginItems list.
+    LSSharedFileListRef loginItemsRef = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+    if (loginItemsRef == nil) return;
+    
+    // Remove the app from the LoginItems list.
+    LSSharedFileListItemRef itemRef = [self itemRefInLoginItems];
+    LSSharedFileListItemRemove(loginItemsRef,itemRef);
+    //    if (itemRef != nil) CFRelease(itemRef);
+}
+
+- (LSSharedFileListItemRef)itemRefInLoginItems {
+    LSSharedFileListItemRef itemRef = nil;
+    
+	NSString * appPath = [[NSBundle mainBundle] bundlePath];
+    
+	// This will retrieve the path for the application
+	// For example, /Applications/test.app
+	CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:appPath];
+    
+	// Create a reference to the shared file list.
+	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+    
+	if (loginItems) {
+		UInt32 seedValue;
+		//Retrieve the list of Login Items and cast them to
+		// a NSArray so that it will be easier to iterate.
+		NSArray  *loginItemsArray = (__bridge NSArray *)LSSharedFileListCopySnapshot(loginItems, &seedValue);
+		for(int i = 0; i< [loginItemsArray count]; i++){
+			LSSharedFileListItemRef currentItemRef = (__bridge LSSharedFileListItemRef)[loginItemsArray
+                                                                                        objectAtIndex:i];
+			//Resolve the item with URL
+			if (LSSharedFileListItemResolve(currentItemRef, 0, (CFURLRef*) &url, NULL) == noErr) {
+				NSString * urlPath = [(__bridge NSURL*)url path];
+				if ([urlPath compare:appPath] == NSOrderedSame){
+                    itemRef = currentItemRef;
+				}
+			}
+		}
+        CFRelease(loginItems);
+	}
+    return itemRef;
 }
 
 @end

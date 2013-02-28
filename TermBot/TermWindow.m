@@ -29,7 +29,7 @@ double startTime = 0;
     {
         initialAlpha = 0.5;
         timerInterval = 0.02;
-        duration = 0.5;
+        duration = 1.5;
         
         NSScreen *screen = [NSScreen mainScreen];
         [self setFrame:[screen frame] display:NO];

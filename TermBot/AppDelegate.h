@@ -8,8 +8,23 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
-
-@property (assign) IBOutlet NSWindow *window;
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+    IBOutlet NSMenu *statusMenu;
+    NSStatusItem *statusItem;
+    
+    BOOL isActive;
+    BOOL isRecording;
+    IBOutlet NSMenuItem *isActiveMenuItem;
+    IBOutlet NSMenuItem *isRecordingMenuItem;
+    IBOutlet NSMenuItem *launchOnStartupMenuItem;
+}
+@property BOOL isActive;
+@property BOOL isRecording;
+- (IBAction)toggleIsActive:(id)pId;
+- (IBAction)toggleIsRecording:(id)pId;
+- (IBAction)toggleLaunchOnStartup:(id)pId;
+- (IBAction)openLog:(id)pId;
+- (IBAction)about:(id)pId;
+- (IBAction)quit:(id)pId;
 
 @end
