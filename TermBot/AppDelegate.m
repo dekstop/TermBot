@@ -136,36 +136,38 @@ NSFileHandle *logFile;
             NSUInteger modifierFlags = [event modifierFlags] & unprintableModifierKeyMask;
             if (modifierFlags == 0) {
                 switch ([event keyCode]) {
-                // Non-word chars: ignore
+                // Non-word chars: ignore.
                     case kVK_Escape:
                         break;
-                // Basic editing: replay
+                // Basic editing: replay.
                     case kVK_Delete:
                         [chars removeLastObject];
+                        break;
+                // Word boundaries, or navigating away: capture last word.
+                    case kVK_Return:
+                    case kVK_Space:
+                    case kVK_Home:
+                    case kVK_PageUp:
+                    case kVK_PageDown:
+                    case kVK_UpArrow:
+                    case kVK_DownArrow:
+                        if ([chars count] > 0) {
+                            [self recordTerm:[chars componentsJoinedByString:@""]];
+                        }
+                        [chars removeAllObjects];
                         break;
                 // More complex edit attempts: abort.
                     // Cop-out: we're not attempting to replay entire edits.
                     // Instead we simply detect indicators of manual word editing
                     // and abort (discard the current word.)
                     case kVK_ForwardDelete:
-                    case kVK_Home:
-                    case kVK_PageUp:
                     case kVK_LeftArrow:
                     case kVK_RightArrow:
-                    case kVK_UpArrow:
-                    case kVK_DownArrow:
-                    // This includes tab completion.
+                        // This includes tab completion.
                     case kVK_Tab:
                         [chars removeAllObjects];
                         break;
-                // Word boundaries: capture last word.
-                    case kVK_Return:
-                    case kVK_Space:
-                        if ([chars count] > 0) {
-                            [self showTerm:[chars componentsJoinedByString:@""]];
-                        }
-                        [chars removeAllObjects];
-                        break;
+                        
                     default:
                         [chars addObject:[event charactersIgnoringModifiers]];
                 }
@@ -174,7 +176,7 @@ NSFileHandle *logFile;
     }];
 }
 
-- (void)showTerm:(NSString*)term
+- (void)recordTerm:(NSString*)term
 {
     if (isRecording) {
         Log(@"%@", term);
