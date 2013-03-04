@@ -134,7 +134,22 @@ NSFileHandle *logFile;
     //        NSUInteger printableModifierKeyMask = NSShiftKeyMask | NSAlternateKeyMask;
             NSUInteger unprintableModifierKeyMask = NSCommandKeyMask | NSControlKeyMask | NSFunctionKeyMask;
             NSUInteger modifierFlags = [event modifierFlags] & unprintableModifierKeyMask;
-            if (modifierFlags == 0) {
+            if (modifierFlags == NSFunctionKeyMask) {
+                switch ([event keyCode]) {
+                // Navigating away: capture last word.
+                    case kVK_UpArrow:
+                    case kVK_DownArrow:
+                        [self recordCurrentTerm];
+                        break;
+                // More complex edit attempts: abort.
+                    case kVK_LeftArrow:
+                    case kVK_RightArrow:
+                        [chars removeAllObjects];
+                        break;
+                    default:
+                        break;
+                }
+            } else if (modifierFlags == 0) {
                 switch ([event keyCode]) {
                 // Non-word chars: ignore.
                     case kVK_Escape:
@@ -149,22 +164,14 @@ NSFileHandle *logFile;
                     case kVK_Home:
                     case kVK_PageUp:
                     case kVK_PageDown:
-                    case kVK_UpArrow:
-                    case kVK_DownArrow:
-                        if ([chars count] > 0) {
-                            [self recordTerm:[chars componentsJoinedByString:@""]];
-                        }
-                        [chars removeAllObjects];
+                        [self recordCurrentTerm];
                         break;
                 // More complex edit attempts: abort.
                     // Cop-out: we're not attempting to replay entire edits.
                     // Instead we simply detect indicators of manual word editing
                     // and abort (discard the current word.)
                     case kVK_ForwardDelete:
-                    case kVK_LeftArrow:
-                    case kVK_RightArrow:
-                        // This includes tab completion.
-                    case kVK_Tab:
+                    case kVK_Tab: // Tab completion.
                         [chars removeAllObjects];
                         break;
                         
@@ -174,6 +181,14 @@ NSFileHandle *logFile;
             }
         }
     }];
+}
+
+- (void)recordCurrentTerm
+{
+    if ([chars count] > 0) {
+        [self recordTerm:[chars componentsJoinedByString:@""]];
+    }
+    [chars removeAllObjects];
 }
 
 - (void)recordTerm:(NSString*)term
@@ -209,7 +224,7 @@ void Log(NSString* format, ...)
     va_end(argList);
     
     // Console
-    NSLog(@"%@", formattedMessage);
+//    NSLog(@"%@", formattedMessage);
     
     // File logging
     NSString *logMessage = [NSString stringWithFormat:@"%@ %@\n",
