@@ -183,6 +183,12 @@ NSFileHandle *logFile;
     }];
 }
 
+/**
+ *
+ * Tools: logging.
+ *
+ **/
+
 - (void)recordCurrentTerm
 {
     if ([chars count] > 0) {
