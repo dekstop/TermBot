@@ -127,10 +127,10 @@ NSFileHandle *logFile;
             return;
         }
         if ([event type] == NSKeyDown) {
-            if ([[event charactersIgnoringModifiers] isEqualToString:@"?"] ||
-                [[event charactersIgnoringModifiers] isEqualToString:@""]) {
-                NSLog(@"%d %@§§ %@", [event keyCode], [event characters], [event charactersIgnoringModifiers]);
-            }
+//            if ([[event charactersIgnoringModifiers] isEqualToString:@"?"] ||
+//                [[event charactersIgnoringModifiers] isEqualToString:@""]) {
+//                NSLog(@"%d %@§§ %@", [event keyCode], [event characters], [event charactersIgnoringModifiers]);
+//            }
     //        NSUInteger printableModifierKeyMask = NSShiftKeyMask | NSAlternateKeyMask;
             NSUInteger unprintableModifierKeyMask = NSCommandKeyMask | NSControlKeyMask | NSFunctionKeyMask;
             NSUInteger modifierFlags = [event modifierFlags] & unprintableModifierKeyMask;
