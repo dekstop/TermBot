@@ -16,6 +16,7 @@
 @synthesize isActive;
 NSAttributedString *menuTitleActive = nil;
 NSAttributedString *menuTitleInactive = nil;
+@synthesize isFlashing;
 @synthesize isRecording;
 
 NSMutableArray *chars;
@@ -54,6 +55,18 @@ NSFileHandle *logFile;
 {
     [isActiveMenuItem setState:(isActive ? NSOnState : NSOffState)];
     [statusItem setAttributedTitle:(isActive ? menuTitleActive : menuTitleInactive)];
+}
+
+- (IBAction)toggleIsFlashing:(id)pId
+{
+  isFlashing = !isFlashing;
+  [[NSUserDefaults standardUserDefaults] setBool:isFlashing forKey:@"isFlashing"];
+  [self updateIsFlashingDisplay];
+}
+
+- (void)updateIsFlashingDisplay
+{
+  [isFlashingMenuItem setState:(isFlashing ? NSOnState : NSOffState)];
 }
 
 - (IBAction)toggleIsRecording:(id)pId
@@ -111,6 +124,7 @@ NSFileHandle *logFile;
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
     
     isActive = [[NSUserDefaults standardUserDefaults] boolForKey:@"isActive"];
+    isFlashing = [[NSUserDefaults standardUserDefaults] boolForKey:@"isFlashing"];
     isRecording = [[NSUserDefaults standardUserDefaults] boolForKey:@"isRecording"];
     [launchOnStartupMenuItem setState:([self isLoginItem] ? NSOnState : NSOffState)];
 
@@ -119,6 +133,7 @@ NSFileHandle *logFile;
     [statusItem setMenu:statusMenu];
     [statusItem setHighlightMode:YES];
     [self updateIsActiveDisplay];
+    [self updateIsFlashingDisplay];
     [self updateIsRecordingDisplay];
     
     // Register global event monitors -- may require assistive device access.
@@ -204,7 +219,9 @@ NSFileHandle *logFile;
     }
     
     if (![history containsObject:term]) {
-        [termWindow showTerm:term];
+        if (isFlashing) {
+            [termWindow showTerm:term];
+        }
         [history addObject:term];
     }
 }

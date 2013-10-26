@@ -13,14 +13,18 @@
     NSStatusItem *statusItem;
     
     BOOL isActive;
+    BOOL isFlashing;
     BOOL isRecording;
     IBOutlet NSMenuItem *isActiveMenuItem;
+    IBOutlet NSMenuItem *isFlashingMenuItem;
     IBOutlet NSMenuItem *isRecordingMenuItem;
     IBOutlet NSMenuItem *launchOnStartupMenuItem;
 }
 @property BOOL isActive;
+@property BOOL isFlashing;
 @property BOOL isRecording;
 - (IBAction)toggleIsActive:(id)pId;
+- (IBAction)toggleIsFlashing:(id)pId;
 - (IBAction)toggleIsRecording:(id)pId;
 - (IBAction)toggleLaunchOnStartup:(id)pId;
 - (IBAction)openLog:(id)pId;
