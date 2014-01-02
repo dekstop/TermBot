@@ -18,3 +18,14 @@ https://github.com/dekstop/TermBot
 Compile, run.
 
 Tested with Xcode 5.0.1 on OS X 10.8.5
+
+
+== Troubleshooting: Access for Assistive Devices
+
+Make sure to enable "Access for Assistive Devices" in your system preferences, otherwise we
+won't be able to access information about other applications.
+
+In OS X 10.9 Mavericks:
+* System Settings > Security & Privacy > Privacy Tab > Accessibility
+* Allow access for TermBot
+* Restart the TermBot application
